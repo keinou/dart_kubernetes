@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+
 import '../api_admissionregistration_v1.dart' as api_admissionregistration_v1;
 import '../api_apiserverinternal_v1alpha1.dart'
     as api_apiserverinternal_v1alpha1;
@@ -32,15 +34,13 @@ import '../api_scheduling_v1alpha1.dart' as api_scheduling_v1alpha1;
 import '../api_storage_v1.dart' as api_storage_v1;
 import '../api_storage_v1alpha1.dart' as api_storage_v1alpha1;
 import '../api_storage_v1beta1.dart' as api_storage_v1beta1;
-import '../apimachinery_pkg_version.dart' as apimachinery_pkg_version;
 import '../apiextensions__apiserver_pkg_apis_apiextensions_v1.dart'
     as apiextensions__apiserver_pkg_apis_apiextensions_v1;
 import '../apimachinery_pkg_apis_meta_v1.dart' as apimachinery_pkg_apis_meta_v1;
+import '../apimachinery_pkg_version.dart' as apimachinery_pkg_version;
+import '../istio_v1beta1.dart' as istio_v1beta1;
 import '../kube__aggregator_pkg_apis_apiregistration_v1.dart'
     as kube__aggregator_pkg_apis_apiregistration_v1;
-import '../istio_v1beta1.dart' as istio_v1beta1;
-
-import 'package:http/http.dart' as http;
 
 /// Kubernetes client.
 class KubernetesClient {
@@ -139,7 +139,7 @@ class KubernetesClient {
   Future<Map<String, dynamic>> _patchJsonMap(String url, Object body) async {
     final fullurl = _getFullUrl(url);
     final headers = <String, String>{'Authorization': 'Bearer $accessToken'};
-    headers['Content-Type'] = _getHeader(body);
+    headers['Content-Type'] = 'application/merge-patch+json';
 
     final resp = await _httpClient.patch(Uri.parse(fullurl),
         body: body, headers: headers);
